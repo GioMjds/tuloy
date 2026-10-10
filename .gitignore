@@ -1,1 +1,6 @@
 .env
+.impeccable
+graphify-out/
+docs/activity-log.md
+docs/screenshots
+docs/videos

@@ -1,0 +1,134 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum TicketSource {
+  REMOTE
+  WALK_IN
+}
+
+enum TicketStatus {
+  WAITING
+  CALLED
+  SERVING
+  DONE
+  SKIPPED
+  NO_SHOW
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+}
+
+model Business {
+  id        String   @id @default(cuid())
+  slug      String   @unique
+  name      String
+  category  String
+  openTime  String
+  closeTime String
+  timezone  String   @default("Asia/Manila")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  owners        Owner[]
+  services      Service[]
+  queueTickets  QueueTicket[]
+  queueCounters QueueCounter[]
+  appointments  Appointment[]
+
+  @@map("businesses")
+}
+
+model Owner {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  name         String?
+  businessId   String
+  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([businessId])
+  @@map("owners")
+}
+
+model Service {
+  id            String   @id @default(cuid())
+  businessId    String
+  business      Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  name          String
+  durationMin   Int
+  priceCentavos Int
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  queueTickets QueueTicket[]
+  appointments Appointment[]
+
+  @@index([businessId])
+  @@map("services")
+}
+
+model QueueTicket {
+  id           String       @id @default(cuid())
+  businessId   String
+  business     Business     @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  serviceId    String
+  service      Service      @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  number       Int
+  displayCode  String
+  customerName String
+  phone        String?
+  token        String       @unique @default(cuid())
+  source       TicketSource @default(WALK_IN)
+  status       TicketStatus @default(WAITING)
+  queueDate    String
+  createdAt    DateTime     @default(now())
+  calledAt     DateTime?
+  servedAt     DateTime?
+  completedAt  DateTime?
+
+  @@index([businessId, queueDate, status])
+  @@index([token])
+  @@map("queue_tickets")
+}
+
+model QueueCounter {
+  businessId String
+  business   Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  queueDate  String
+  lastNumber Int      @default(0)
+
+  @@id([businessId, queueDate])
+  @@map("queue_counters")
+}
+
+model Appointment {
+  id           String            @id @default(cuid())
+  businessId   String
+  business     Business          @relation(fields: [businessId], references: [id], onDelete: Cascade)
+  serviceId    String
+  service      Service           @relation(fields: [serviceId], references: [id], onDelete: Restrict)
+  customerName String
+  phone        String?
+  token        String            @unique @default(cuid())
+  startsAt     DateTime
+  endsAt       DateTime
+  status       AppointmentStatus @default(CONFIRMED)
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@unique([businessId, startsAt])
+  @@index([businessId, status])
+  @@map("appointments")
+}
