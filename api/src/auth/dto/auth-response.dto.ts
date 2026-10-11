@@ -1,10 +1,17 @@
-export class AuthOwnerDto {
+import { UserRole } from '@prisma/client';
+
+export class AuthUserDto {
   id: string;
   email: string;
-  businessId: string;
+  name?: string | null;
+  role: UserRole;
+  businessId?: string | null;
 }
+
+export class AuthOwnerDto extends AuthUserDto {}
 
 export class AuthResponseDto {
   accessToken: string;
-  owner: AuthOwnerDto;
+  user: AuthUserDto;
+  owner: AuthUserDto;
 }

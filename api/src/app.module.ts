@@ -13,6 +13,7 @@ import { BusinessesModule } from './businesses/businesses.module.js';
 import { PrismaModule } from './prisma/prisma.module.js';
 import { QueueModule } from './queue/queue.module.js';
 import { LoggerMiddleware } from './common/middleware/logger.middleware.js';
+import { AdminModule } from './admin/admin.module.js';
 
 @Module({
   imports: [
@@ -20,7 +21,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware.js';
     ThrottlerModule.forRoot([
       {
         ttl: 60_000,
-        limit: 30,
+        limit: 60,
       },
     ]),
     JwtModule.registerAsync({
@@ -44,6 +45,7 @@ import { LoggerMiddleware } from './common/middleware/logger.middleware.js';
     BusinessesModule,
     QueueModule,
     AppointmentsModule,
+    AdminModule,
   ],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }, AuthService],
   exports: [AuthService],

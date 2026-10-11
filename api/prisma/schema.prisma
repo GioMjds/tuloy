@@ -6,6 +6,16 @@ datasource db {
   provider = "postgresql"
 }
 
+enum UserRole {
+  SUPER_ADMIN // platform operator (you), no BusinessMember rows needed
+  OWNER // shop-side user, access is granted via BusinessMember
+}
+
+enum MemberRole {
+  OWNER
+  STAFF
+}
+
 enum TicketSource {
   REMOTE
   WALK_IN
@@ -18,6 +28,7 @@ enum TicketStatus {
   DONE
   SKIPPED
   NO_SHOW
+  CANCELLED
 }
 
 enum AppointmentStatus {
@@ -25,6 +36,37 @@ enum AppointmentStatus {
   CONFIRMED
   CANCELLED
   COMPLETED
+  NO_SHOW
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  email              String   @unique
+  passwordHash       String
+  name               String?
+  role               UserRole @default(OWNER)
+  isActive           Boolean  @default(true)
+  mustChangePassword Boolean  @default(true)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  memberships BusinessMember[]
+
+  @@map("users")
+}
+
+model BusinessMember {
+  userId     String
+  businessId String
+  role       MemberRole @default(OWNER)
+  createdAt  DateTime   @default(now())
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  business Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
+
+  @@id([userId, businessId])
+  @@index([businessId])
+  @@map("business_members")
 }
 
 model Business {
@@ -35,30 +77,17 @@ model Business {
   openTime  String
   closeTime String
   timezone  String   @default("Asia/Manila")
+  isActive  Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  owners        Owner[]
+  members       BusinessMember[]
   services      Service[]
   queueTickets  QueueTicket[]
   queueCounters QueueCounter[]
   appointments  Appointment[]
 
   @@map("businesses")
-}
-
-model Owner {
-  id           String   @id @default(cuid())
-  email        String   @unique
-  passwordHash String
-  name         String?
-  businessId   String
-  business     Business @relation(fields: [businessId], references: [id], onDelete: Cascade)
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
-
-  @@index([businessId])
-  @@map("owners")
 }
 
 model Service {
@@ -68,7 +97,7 @@ model Service {
   name          String
   durationMin   Int
   priceCentavos Int
-  isActive      Boolean  @default(true)
+  isActive      Boolean  @default(true) // soft-delete (tickets/appointments use Restrict)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
@@ -89,7 +118,7 @@ model QueueTicket {
   displayCode  String
   customerName String
   phone        String?
-  token        String       @unique @default(cuid())
+  token        String       @unique @default(uuid())
   source       TicketSource @default(WALK_IN)
   status       TicketStatus @default(WAITING)
   queueDate    String
@@ -98,8 +127,8 @@ model QueueTicket {
   servedAt     DateTime?
   completedAt  DateTime?
 
+  @@unique([businessId, queueDate, number])
   @@index([businessId, queueDate, status])
-  @@index([token])
   @@map("queue_tickets")
 }
 
@@ -121,14 +150,14 @@ model Appointment {
   service      Service           @relation(fields: [serviceId], references: [id], onDelete: Restrict)
   customerName String
   phone        String?
-  token        String            @unique @default(cuid())
+  token        String            @unique @default(uuid())
   startsAt     DateTime
   endsAt       DateTime
   status       AppointmentStatus @default(CONFIRMED)
   createdAt    DateTime          @default(now())
   updatedAt    DateTime          @updatedAt
 
-  @@unique([businessId, startsAt])
+  @@index([businessId, startsAt])
   @@index([businessId, status])
   @@map("appointments")
 }
