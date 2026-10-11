@@ -20,7 +20,6 @@
     ],
     "paths": {
       "@/*": ["./*"],
-      "@tuloy/shared": ["./lib/auth/shared"],
       "next-intl/config": ["./i18n/request.ts"]
     }
   },

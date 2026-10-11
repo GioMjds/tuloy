@@ -1,4 +1,4 @@
-import type { Role } from '@tuloy/shared';
+import type { Role } from './shared';
 
 /** Only allow same-site paths inside the area this role is allowed to use. */
 export function safeNext(

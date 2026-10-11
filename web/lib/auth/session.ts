@@ -2,7 +2,7 @@ import 'server-only';
 import { cache } from 'react';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import type { Role, SessionUser } from '@tuloy/shared';
+import type { Role, SessionUser } from './shared';
 import { SESSION_COOKIE, homeFor } from './constants';
 import { verifyToken } from './jwt';
 

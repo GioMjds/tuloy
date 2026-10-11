@@ -1,7 +1,7 @@
 'use client';
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { createStore, useStore, type StoreApi } from 'zustand';
-import type { SessionUser } from '@tuloy/shared';
+import type { SessionUser } from '@/lib/auth/shared';
 
 type SessionState = { user: SessionUser | null; clear: () => void };
 const SessionContext = createContext<StoreApi<SessionState> | null>(null);

@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
-import { loginSchema } from '@tuloy/shared';
+import { loginSchema } from '@/lib/auth/shared';
 import { env } from '@/lib/env';
 import { verifyToken } from '@/lib/auth/jwt';
 import { SESSION_COOKIE, homeFor } from '@/lib/auth/constants';

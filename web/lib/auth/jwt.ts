@@ -1,6 +1,6 @@
 import { jwtVerify } from 'jose';
 import { z } from 'zod';
-import { roleSchema, type SessionUser } from '@tuloy/shared';
+import { roleSchema, type SessionUser } from './shared';
 
 const payloadSchema = z.object({
   sub: z.string(),
