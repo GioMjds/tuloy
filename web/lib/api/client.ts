@@ -1,6 +1,8 @@
-import { createValidatedClient } from './validated-client';
+import {
+  createValidatedClient,
+  type ValidatedClient,
+} from './validated-client';
 import { SESSION_COOKIE } from '../auth/constants';
-import { redirect } from 'next/navigation';
 
 function getClientCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
@@ -8,8 +10,8 @@ function getClientCookie(name: string): string | null {
   return match ? decodeURIComponent(match[3]) : null;
 }
 
-export const apiClient = createValidatedClient({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000',
+export const apiClient: ValidatedClient = createValidatedClient({
+  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
   getToken: () => getClientCookie(SESSION_COOKIE),
   onUnauthorized: () => {
     if (
@@ -17,7 +19,9 @@ export const apiClient = createValidatedClient({
       (window.location.pathname.startsWith('/dashboard') ||
         window.location.pathname.startsWith('/admin'))
     ) {
-      redirect(`/login?next=${encodeURIComponent(window.location.pathname)}`);
+      window.location.href = `/login?next=${encodeURIComponent(
+        window.location.pathname,
+      )}`;
     }
   },
 });
