@@ -19,6 +19,7 @@ export const apiClient: ValidatedClient = createValidatedClient({
       (window.location.pathname.startsWith('/dashboard') ||
         window.location.pathname.startsWith('/admin'))
     ) {
+      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
       window.location.href = `/login?next=${encodeURIComponent(
         window.location.pathname,
       )}`;
