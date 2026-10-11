@@ -1,6 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { AppointmentStatus, PrismaClient, TicketSource, TicketStatus } from '@prisma/client';
-import argon2 from 'argon2';
+import * as bcrypt from 'bcrypt';
 
 process.loadEnvFile?.();
 
@@ -11,7 +11,7 @@ const prisma = new PrismaClient({ adapter });
 
 async function main() {
   const today = new Date().toISOString().split('T')[0];
-  const passwordHash = await argon2.hash('password123');
+  const passwordHash = await bcrypt.hash('password123', 12);
 
   // Clean existing seed records
   await prisma.appointment.deleteMany();
