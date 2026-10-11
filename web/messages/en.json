@@ -1,0 +1,44 @@
+{
+  "common": {
+    "appName": "Tuloy",
+    "poweredBy": "Powered by Tuloy",
+    "signOut": "Sign out",
+    "retry": "Try again"
+  },
+  "nav": {
+    "queue": "Queue",
+    "services": "Services",
+    "share": "Share",
+    "settings": "Settings",
+    "shops": "Shops",
+    "owners": "Owners"
+  },
+  "auth": {
+    "loginTitle": "Sign in",
+    "loginDescription": "Manage your queue.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "invalid_credentials": "Wrong email or password.",
+    "login_failed": "Can't sign in right now. Please try again.",
+    "invalid_input": "Please check your details."
+  },
+  "validation": {
+    "required": "This field is required.",
+    "email": "Enter a valid email."
+  },
+  "realtime": {
+    "live": "Live",
+    "connecting": "Connecting…",
+    "offline": "Offline"
+  },
+  "states": {
+    "emptyTitle": "Nothing here yet",
+    "errorTitle": "Something went wrong",
+    "notFoundTitle": "Page not found",
+    "shopNotFound": "Shop not found"
+  },
+  "dashboard": { "queueEmpty": "No one in the queue yet." },
+  "admin": { "shopsEmpty": "No shops yet." }
+}

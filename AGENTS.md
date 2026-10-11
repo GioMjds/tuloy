@@ -47,6 +47,16 @@
 - Product Register: `product` (essential utility, workflows, and task completion).
 - Primary Docs: Reference [PRODUCT.md](./PRODUCT.md) for strategy and users; reference [DESIGN.md](./DESIGN.md) for visual tokens and components.
 
+## Design rules (web/)
+
+- Use shadcn semantic tokens (bg-background, text-foreground, text-muted-foreground, border-border). Do not use `surface-_` / `ink-_` classes.
+- Every tap target is at least 48x48px. Inputs are h-12 text-base.
+- Flat by default: no decorative shadows (dialogs, menus and toasts excepted). No glassmorphism, no gradient text, no nested cards, no side-stripe borders.
+- No radius above 16px on cards or inputs (rounded-full only for dots and avatars).
+- Status colors: amber = CALLED/SERVING, green = DONE, red = NO_SHOW, neutral = WAITING/SKIPPED. Amber is a fill, never text on white.
+- Queue numbers: tabular-nums, bold, readable at 1 meter. Keep Pila / Turno / Walk-in untranslated per DESIGN.md.
+- No offline write queue in v0. Disable owner actions when offline.
+
 ## After Task
 
 - Must give an user workflow after each task. Like how each component is used, what the user sees, and how they interact with it.

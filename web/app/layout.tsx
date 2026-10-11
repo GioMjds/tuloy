@@ -1,17 +1,22 @@
-import type { Metadata } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import type { Metadata, Viewport } from 'next';
+import { Inter, JetBrains_Mono } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import { getLocale, getMessages } from 'next-intl/server';
+import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import './globals.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
-  subsets: ['latin'],
+const inter = Inter({
+  variable: '--font-sans',
+  subsets: ['latin', 'latin-ext'],
+  display: 'swap',
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const jetbrains = JetBrains_Mono({
+  variable: '--font-mono',
   subsets: ['latin'],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -20,23 +25,32 @@ export const metadata: Metadata = {
     'Queue and appointment booking PWA for Filipino walk-in businesses',
 };
 
-export default function RootLayout({ children }: LayoutProps<'/'>) {
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
+export default async function RootLayout({ children }: LayoutProps<'/'>) {
+  const [locale, messages] = await Promise.all([getLocale(), getMessages()]);
+
   return (
     <html
-      lang="en"
+      lang={locale}
       data-scroll-behavior="smooth"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${inter.variable} ${jetbrains.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-dvh flex flex-col bg-background text-foreground">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
-          <Toaster />
+          <NextIntlClientProvider locale={locale} messages={messages}>
+            <QueryProvider>{children}</QueryProvider>
+            <Toaster richColors position="top-center" />
+          </NextIntlClientProvider>
         </ThemeProvider>
       </body>
     </html>

@@ -16,6 +16,7 @@ Tuloy is built for high-speed counter execution under real-world conditions: bri
 The system is strictly utilitarian and responsive. It rejects bloated legacy POS software (cramped tables, microscopic buttons, nested dialog mazes) and Silicon Valley SaaS slop (gradient hero text, floating glassmorphism cards, nested cards, and decorative animations).
 
 **Key Characteristics:**
+
 - High-contrast, sunlight-readable surfaces designed for counter tablets and mobile browsers.
 - 48px+ generous touch targets for rapid, error-free tapping during peak rushes.
 - Zero non-essential decoration: typography, contrast, and status colors do all the communicative work.
@@ -50,6 +51,7 @@ Surfaces are flat by default. Depth is conveyed strictly through subtle 1px bord
 ## Do's and Don'ts
 
 ### Do:
+
 - **Do** maintain strict WCAG AA contrast (≥4.5:1 for body text, ≥3:1 for large display elements).
 - **Do** ensure all tap targets on the staff screen are at least 48×48px.
 - **Do** format queue tickets with unambiguous prefixes (`W-` for staff walk-ins, `A-` for online/QR joins).
@@ -57,6 +59,7 @@ Surfaces are flat by default. Depth is conveyed strictly through subtle 1px bord
 - **Do** preserve natural bilingual Filipino/English terminology (`Pila`, `Turno`, `Walk-in`, `Tuloy`).
 
 ### Don't:
+
 - **Don't** use gradient text (`background-clip: text`), decorative background grids, or diagonal stripes.
 - **Don't** use glassmorphism, background blurs, or nested cards.
 - **Don't** use side-stripe borders (`border-left` or `border-right` > 1px) on cards, list items, or callouts.

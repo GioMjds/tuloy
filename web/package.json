@@ -42,6 +42,7 @@
   "devDependencies": {
     "@serwist/cli": "^9.5.13",
     "@serwist/next": "^9.5.13",
+    "@swc/core-win32-x64-msvc": "^1.16.13",
     "@tailwindcss/turbopack": "^4",
     "@types/node": "^20",
     "@types/qrcode": "^1.5.6",

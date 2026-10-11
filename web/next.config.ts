@@ -1,11 +1,9 @@
 import type { NextConfig } from 'next';
+import path from 'path';
 
 const nextConfig: NextConfig = {
-  /* config options here */
   typedRoutes: true,
   reactCompiler: false,
-  cacheComponents: true,
-  partialPrefetching: true,
   turbopack: {
     rules: {
       '*.css': {
@@ -13,6 +11,16 @@ const nextConfig: NextConfig = {
         as: '*.css',
       },
     },
+    resolveAlias: {
+      'next-intl/config': './i18n/request.ts',
+    },
+  },
+  webpack(config) {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      'next-intl/config': path.resolve(process.cwd(), './i18n/request.ts'),
+    };
+    return config;
   },
   async headers() {
     return [

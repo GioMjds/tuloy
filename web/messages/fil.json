@@ -1,0 +1,44 @@
+{
+  "common": {
+    "appName": "Tuloy",
+    "poweredBy": "Powered by Tuloy",
+    "signOut": "Mag-log out",
+    "retry": "Subukan ulit"
+  },
+  "nav": {
+    "queue": "Pila",
+    "services": "Mga Serbisyo",
+    "share": "I-share",
+    "settings": "Mga Setting",
+    "shops": "Mga Tindahan",
+    "owners": "Mga May-ari"
+  },
+  "auth": {
+    "loginTitle": "Mag-login",
+    "loginDescription": "Pamahalaan ang inyong pila.",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Mag-login",
+    "submitting": "Nagla-login…",
+    "invalid_credentials": "Mali ang email o password.",
+    "login_failed": "Hindi makapag-login ngayon. Subukan ulit.",
+    "invalid_input": "Pakisuri ang inyong mga detalye."
+  },
+  "validation": {
+    "required": "Kailangan ito.",
+    "email": "Maglagay ng tamang email."
+  },
+  "realtime": {
+    "live": "Live",
+    "connecting": "Kumokonekta…",
+    "offline": "Offline"
+  },
+  "states": {
+    "emptyTitle": "Wala pa rito",
+    "errorTitle": "Nagkaproblema",
+    "notFoundTitle": "Hindi nahanap ang page",
+    "shopNotFound": "Hindi nahanap ang tindahan"
+  },
+  "dashboard": { "queueEmpty": "Wala pang nakapila." },
+  "admin": { "shopsEmpty": "Wala pang tindahan." }
+}

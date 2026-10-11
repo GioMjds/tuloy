@@ -99,6 +99,9 @@ importers:
       '@serwist/next':
         specifier: ^9.5.13
         version: 9.5.13(@serwist/cli@9.5.13(@types/node@20.19.43)(browserslist@4.29.3)(esbuild@0.28.2)(typescript@5.9.3))(next@16.4.0(@babel/core@7.29.7(supports-color@10.2.2))(@types/node@20.19.43)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react@19.3.0)(typescript@5.9.3)
+      '@swc/core-win32-x64-msvc':
+        specifier: ^1.16.13
+        version: 1.16.13
       '@tailwindcss/turbopack':
         specifier: ^4
         version: 4.3.3
@@ -5223,8 +5226,7 @@ snapshots:
   '@swc/core-win32-ia32-msvc@1.16.13':
     optional: true
 
-  '@swc/core-win32-x64-msvc@1.16.13':
-    optional: true
+  '@swc/core-win32-x64-msvc@1.16.13': {}
 
   '@swc/core@1.16.13(@swc/helpers@0.5.23)':
     dependencies:
