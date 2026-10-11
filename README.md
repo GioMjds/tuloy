@@ -8,8 +8,6 @@
 
 Tuloy replaces the notebook, the Messenger thread, and the "bukas na lang po" with a live queue. Customers scan a QR code to join. Staff run the queue from one shop device. Owners see the day at a glance. It keeps working when the shop's internet doesn't.
 
-> Formerly developed under the working name **Takda**.
-
 ---
 
 ## Table of Contents

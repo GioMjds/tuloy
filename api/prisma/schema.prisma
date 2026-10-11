@@ -7,7 +7,7 @@ datasource db {
 }
 
 enum UserRole {
-  SUPER_ADMIN // platform operator (you), no BusinessMember rows needed
+  SUPER_ADMIN // platform operator, no BusinessMember rows needed
   OWNER // shop-side user, access is granted via BusinessMember
 }
 
