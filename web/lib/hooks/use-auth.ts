@@ -21,6 +21,7 @@ export function useLoginMutation(
 ) {
   const queryClient = useQueryClient();
   return useMutation({
+    ...options,
     mutationFn: (credentials: LoginInput) => authApi.login(credentials),
     onSuccess: (...args) => {
       const [data] = args;
@@ -28,7 +29,6 @@ export function useLoginMutation(
       queryClient.invalidateQueries({ queryKey: authKeys.all });
       options?.onSuccess?.(...args);
     },
-    ...options,
   });
 }
 
