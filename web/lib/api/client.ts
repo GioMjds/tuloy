@@ -3,6 +3,7 @@ import {
   type ValidatedClient,
 } from './validated-client';
 import { SESSION_COOKIE } from '../auth/constants';
+import { redirect } from 'next/navigation';
 
 function getClientCookie(name: string): string | null {
   if (typeof document === 'undefined') return null;
@@ -19,10 +20,7 @@ export const apiClient: ValidatedClient = createValidatedClient({
       (window.location.pathname.startsWith('/dashboard') ||
         window.location.pathname.startsWith('/admin'))
     ) {
-      // eslint-disable-next-line @next/next/no-location-assign-relative-destination
-      window.location.href = `/login?next=${encodeURIComponent(
-        window.location.pathname,
-      )}`;
+      redirect(`/login?next=${encodeURIComponent(window.location.pathname)}`);
     }
   },
 });
