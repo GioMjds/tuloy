@@ -8,11 +8,14 @@
 import type { z, ZodError, ZodType } from 'zod';
 import {
   createHttpClient,
+  type ApiVersion,
   type BodylessOptions,
   type HttpClient,
   type HttpClientConfig,
   type RequestOptions,
 } from './http-client';
+
+export type { ApiVersion };
 
 /* ───────────────────────────── Errors ───────────────────────────── */
 

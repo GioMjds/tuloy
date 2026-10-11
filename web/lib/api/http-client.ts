@@ -8,10 +8,13 @@
 
 export type QueryValue = string | number | boolean | null | undefined;
 export type QueryParams = Record<string, QueryValue | QueryValue[]>;
+export type ApiVersion = string | number | false | null;
 
 export interface HttpClientConfig {
-  /** e.g. "http://localhost:3001/api" */
+  /** e.g. "http://localhost:5000" or "https://takda-api.vercel.app" */
   baseUrl: string;
+  /** Default API version prefix (e.g. 'v1', 1). Default: 'v1'. Set false/null to disable. */
+  version?: ApiVersion;
   /** Default headers sent on every request. */
   headers?: HeadersInit;
   /** Default timeout in ms. Set 0 to disable. Default: 15000. */
@@ -33,6 +36,8 @@ export interface HttpClientConfig {
 export interface RequestOptions extends Omit<RequestInit, 'body' | 'method'> {
   query?: QueryParams;
   body?: unknown;
+  /** Target API version for this request. Overrides client default. Set false/null to disable. */
+  version?: ApiVersion;
   /** Per-request timeout override. */
   timeoutMs?: number;
   /** Next.js fetch cache options (ignored outside Next). */
@@ -112,17 +117,40 @@ export const isApiError = (e: unknown): e is ApiError => e instanceof ApiError;
 
 /* ───────────────────────────── Helpers ───────────────────────────── */
 
-function buildUrl(baseUrl: string, path: string, query?: QueryParams): string {
+function formatVersion(version?: ApiVersion): string | null {
+  if (version === false || version === null || version === undefined) return null;
+  const str = String(version).trim();
+  if (!str) return null;
+  return str.startsWith('v') ? str : `v${str}`;
+}
+
+function buildUrl(
+  baseUrl: string,
+  path: string,
+  query?: QueryParams,
+  version?: ApiVersion,
+): string {
   const base = baseUrl.replace(/\/+$/, '');
   const clean = path.startsWith('/') ? path : `/${path}`;
-  let url = `${base}${clean}`;
+  const v = formatVersion(version);
+
+  let prefix = '';
+  if (v) {
+    const hasVersionInBase = base.endsWith(`/${v}`);
+    const hasVersionInPath = clean === `/${v}` || clean.startsWith(`/${v}/`);
+    if (!hasVersionInBase && !hasVersionInPath) {
+      prefix = `/${v}`;
+    }
+  }
+
+  let url = `${base}${prefix}${clean}`;
 
   if (query) {
     const params = new URLSearchParams();
     for (const [key, value] of Object.entries(query)) {
       const values = Array.isArray(value) ? value : [value];
-      for (const v of values) {
-        if (v !== undefined && v !== null) params.append(key, String(v));
+      for (const val of values) {
+        if (val !== undefined && val !== null) params.append(key, String(val));
       }
     }
     const qs = params.toString();
@@ -213,6 +241,7 @@ function withTimeout(userSignal: AbortSignal | null | undefined, ms: number) {
 export function createHttpClient(config: HttpClientConfig): HttpClient {
   const doFetch =
     config.fetch ?? ((...args: Parameters<typeof fetch>) => fetch(...args));
+  const defaultVersion = config.version !== undefined ? config.version : 'v1';
 
   async function request<T>(
     method: string,
@@ -225,8 +254,12 @@ export function createHttpClient(config: HttpClientConfig): HttpClient {
       timeoutMs,
       headers: reqHeaders,
       signal: userSignal,
+      version: reqVersion,
       ...rest
     } = options;
+
+    const effectiveVersion =
+      reqVersion !== undefined ? reqVersion : defaultVersion;
 
     // Headers: defaults < per-request. Auth only if caller didn't set it.
     const headers = new Headers(config.headers);
@@ -256,14 +289,17 @@ export function createHttpClient(config: HttpClientConfig): HttpClient {
     );
 
     try {
-      const res = await doFetch(buildUrl(config.baseUrl, path, query), {
-        credentials: config.credentials,
-        ...rest,
-        method,
-        headers,
-        body: payload,
-        signal: timeout.signal,
-      });
+      const res = await doFetch(
+        buildUrl(config.baseUrl, path, query, effectiveVersion),
+        {
+          credentials: config.credentials,
+          ...rest,
+          method,
+          headers,
+          body: payload,
+          signal: timeout.signal,
+        },
+      );
 
       const data = await parseBody(res);
 

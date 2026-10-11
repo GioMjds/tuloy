@@ -38,7 +38,7 @@ import { AdminModule } from './admin/admin.module.js';
     }),
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.local', '.env'],
+      envFilePath: ['.env.production', '.env'],
     }),
     PrismaModule,
     AuthModule,

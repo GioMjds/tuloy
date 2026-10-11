@@ -12,7 +12,7 @@ import { AuthService } from './auth.service.js';
 import { LoginDto } from './dto/login.dto.js';
 import { AuthResponseDto } from './dto/auth-response.dto.js';
 import { JwtAuthGuard } from './jwt-auth.guard.js';
-import type { AuthenticatedOwner } from './interfaces/authenticated-owner.interface.js';
+import type { AuthenticatedUser } from './interfaces/authenticated-owner.interface.js';
 import { CurrentUser } from './current-user.decorator.js';
 
 @Controller('auth')
@@ -28,7 +28,18 @@ export class AuthController {
 
   @Get('me')
   @UseGuards(JwtAuthGuard)
-  me(@CurrentUser() owner: AuthenticatedOwner): AuthenticatedOwner {
-    return owner;
+  async me(
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<AuthenticatedUser> {
+    return this.authService.me(user.id);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(HttpStatus.OK)
+  async logout(
+    @CurrentUser() user: AuthenticatedUser,
+  ): Promise<{ message: string }> {
+    return this.authService.logout(user.id);
   }
 }

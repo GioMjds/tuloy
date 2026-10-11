@@ -35,12 +35,12 @@ export class AuthService {
       throw new UnauthorizedException('Account is inactive');
     }
 
-    const payload: JwtPayload = {
+    const payload = {
       sub: user.id,
       email: user.email,
       role: user.role,
       businessId: user.businessId,
-    };
+    } satisfies JwtPayload;
 
     const accessToken = await this.jwtService.signAsync(payload);
     const userDto = {
@@ -56,6 +56,12 @@ export class AuthService {
       user: userDto,
       owner: userDto,
     };
+  }
+
+  // Invalidate session on client side and record logout event.
+  async logout(userId: string): Promise<{ message: string }> {
+    this.logger.log(`User logged out: ${userId}`);
+    return { message: 'Logged out successfully' };
   }
 
   private async validateUser(email: string, password: string) {
@@ -92,6 +98,15 @@ export class AuthService {
 
   async hashPassword(plain: string): Promise<string> {
     return bcrypt.hash(plain, BCRYPT_ROUNDS);
+  }
+
+  // Return authenticated user profile by id.
+  async me(userId: string): Promise<AuthenticatedUser> {
+    const user = await this.findUserById(userId);
+    if (!user) {
+      throw new UnauthorizedException('User not found');
+    }
+    return user;
   }
 
   async findUserById(id: string): Promise<AuthenticatedUser | null> {
