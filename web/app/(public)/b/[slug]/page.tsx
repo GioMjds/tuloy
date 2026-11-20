@@ -1,13 +1,8 @@
 import { notFound } from 'next/navigation';
-import { z } from 'zod';
 import { PageHeader } from '@/components/layout/page-header';
 import { serverFetch } from '@/lib/api-server';
 import { ApiError } from '@/lib/api-error';
-
-// Minimal on purpose; replace with the real business schema in F3.
-const businessSchema = z
-  .object({ name: z.string(), slug: z.string() })
-  .passthrough();
+import { businessSchema } from '@/lib/endpoints/businesses';
 
 export default async function ShopPage({
   params,
