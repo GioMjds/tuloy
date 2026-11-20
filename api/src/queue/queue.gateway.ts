@@ -1,10 +1,10 @@
 import {
   OnGatewayConnection,
-  SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { PrismaService } from '../prisma/prisma.service.js';
 
 @WebSocketGateway({
   namespace: 'queue',
@@ -12,11 +12,28 @@ import { Server, Socket } from 'socket.io';
 })
 export class QueueGateway implements OnGatewayConnection {
   @WebSocketServer() server: Server;
+  constructor(private prisma: PrismaService) {}
 
-  handleConnection(client: Socket) {
-    const businessId = client.handshake.query.businessId as string;
-    if (!businessId) return client.disconnect();
-    client.join(`business:${businessId}`);
+  async handleConnection(client: Socket) {
+    const slug = client.handshake.query.slug;
+    if (typeof slug !== 'string' || !slug) {
+      client.disconnect();
+      return;
+    }
+
+    try {
+      const business = await this.prisma.business.findUnique({
+        where: { slug },
+        select: { id: true, isActive: true },
+      });
+      if (!business?.isActive) {
+        client.disconnect();
+        return;
+      }
+      await client.join(`business:${business.id}`);
+    } catch {
+      client.disconnect();
+    }
   }
 
   emitQueueUpdated(businessId: string) {
