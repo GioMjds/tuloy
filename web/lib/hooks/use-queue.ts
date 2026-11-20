@@ -13,6 +13,7 @@ import {
   type TicketResponse,
   type TicketWithToken,
 } from '../endpoints/queue';
+import { useRealtimeStore } from '@/stores/realtime-store';
 import type { ApiError } from '../api/http-client';
 
 export const queueKeys = {
@@ -49,13 +50,14 @@ export function useQueueTicketQuery(
   >,
 ) {
   const { pollIntervalMs = 5000, ...queryOptions } = options ?? {};
+  const live = useRealtimeStore((s) => s.status === 'live');
   return useQuery({
     queryKey: queueKeys.ticket(token),
     queryFn: () => queueApi.getByToken(token),
     enabled: Boolean(token),
     refetchInterval: (query) => {
       const ticket = query.state.data;
-      if (!ticket || TERMINAL_STATUSES.has(ticket.status)) {
+      if (live || !ticket || TERMINAL_STATUSES.has(ticket.status)) {
         return false;
       }
       return pollIntervalMs;
@@ -74,11 +76,12 @@ export function useOwnerQueueQuery(
   >,
 ) {
   const { pollIntervalMs = 10000, ...queryOptions } = options ?? {};
+  const live = useRealtimeStore((s) => s.status === 'live');
   return useQuery({
     queryKey: queueKeys.list(slug),
     queryFn: () => queueApi.list(slug),
     enabled: Boolean(slug),
-    refetchInterval: pollIntervalMs,
+    refetchInterval: live ? false : pollIntervalMs,
     ...queryOptions,
   });
 }
