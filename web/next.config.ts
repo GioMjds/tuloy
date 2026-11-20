@@ -4,6 +4,9 @@ import path from 'path';
 const nextConfig: NextConfig = {
   typedRoutes: true,
   reactCompiler: false,
+  experimental: {
+    agentUpgrade: 'security',
+  },
   turbopack: {
     rules: {
       '*.css': {
