@@ -1,7 +1,9 @@
-import { getTranslations } from 'next-intl/server';
-import { EmptyState } from '@/components/layout/states';
+import { NotFoundBody } from '@/components/layout/not-found-body';
 
-export default async function NotFound() {
-  const t = await getTranslations('states');
-  return <EmptyState title={t('notFoundTitle')} />;
+export default function NotFound() {
+  return (
+    <main className="mx-auto flex min-h-dvh max-w-md flex-col justify-center">
+      <NotFoundBody />
+    </main>
+  );
 }

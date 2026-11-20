@@ -7,7 +7,10 @@ export default async function DashboardPage() {
   return (
     <>
       <PageHeader title={t('nav.queue')} />
-      <EmptyState title={t('dashboard.queueEmpty')} />
+      <EmptyState
+        title={t('dashboard.queueEmpty')}
+        description={t('dashboard.queueEmptyHint')}
+      />
     </>
   );
 }

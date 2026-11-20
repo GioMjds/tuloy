@@ -3,7 +3,32 @@
     "appName": "Tuloy",
     "poweredBy": "Powered by Tuloy",
     "signOut": "Sign out",
+    "signIn": "Owner sign in",
     "retry": "Try again"
+  },
+  "home": {
+    "title": "Join the line from your phone.",
+    "tagline": "Live queue for barbershops, salons, and walk-in shops. No app, no account.",
+    "customerTitle": "At a shop?",
+    "customerBody": "Scan the QR code at the counter, or type the shop code.",
+    "shopCode": "Shop code",
+    "go": "Go to shop",
+    "stepsTitle": "How it works",
+    "step1": "Scan the shop's QR code.",
+    "step2": "Pick a service and join the queue.",
+    "step3": "Watch your turn live. Come back when called.",
+    "ownerTitle": "Own a shop?",
+    "ownerBody": "Run your queue from one phone or tablet."
+  },
+  "shop": {
+    "hours": "Open {open} to {close}",
+    "openNow": "Open now",
+    "closedNow": "Closed now",
+    "services": "Services",
+    "servicesEmpty": "No services listed yet.",
+    "minutes": "{n} min",
+    "joinQueue": "Join queue",
+    "joinSoon": "Online joining is coming soon. Ask the staff to add you to the queue."
   },
   "nav": {
     "queue": "Queue",
@@ -37,8 +62,13 @@
     "emptyTitle": "Nothing here yet",
     "errorTitle": "Something went wrong",
     "notFoundTitle": "Page not found",
+    "notFoundBody": "Check the link or the shop code.",
+    "backHome": "Back to home",
     "shopNotFound": "Shop not found"
   },
-  "dashboard": { "queueEmpty": "No one in the queue yet." },
+  "dashboard": {
+    "queueEmpty": "No one in the queue yet.",
+    "queueEmptyHint": "Share your shop link or QR code so customers can join."
+  },
   "admin": { "shopsEmpty": "No shops yet." }
 }

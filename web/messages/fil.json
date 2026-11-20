@@ -3,7 +3,32 @@
     "appName": "Tuloy",
     "poweredBy": "Powered by Tuloy",
     "signOut": "Mag-log out",
+    "signIn": "Login ng may-ari",
     "retry": "Subukan ulit"
+  },
+  "home": {
+    "title": "Pumila gamit ang phone mo.",
+    "tagline": "Live na pila para sa barbershop, salon, at walk-in na tindahan. Walang app, walang account.",
+    "customerTitle": "Nasa tindahan ka?",
+    "customerBody": "I-scan ang QR code sa counter, o i-type ang shop code.",
+    "shopCode": "Shop code",
+    "go": "Pumunta sa tindahan",
+    "stepsTitle": "Paano ito gumagana",
+    "step1": "I-scan ang QR code ng tindahan.",
+    "step2": "Pumili ng serbisyo at pumila.",
+    "step3": "Bantayan ang turno mo nang live. Bumalik kapag tinawag ka.",
+    "ownerTitle": "May-ari ka ng tindahan?",
+    "ownerBody": "Patakbuhin ang pila gamit ang isang phone o tablet."
+  },
+  "shop": {
+    "hours": "Bukas {open} hanggang {close}",
+    "openNow": "Bukas ngayon",
+    "closedNow": "Sarado ngayon",
+    "services": "Mga Serbisyo",
+    "servicesEmpty": "Wala pang nakalistang serbisyo.",
+    "minutes": "{n} min",
+    "joinQueue": "Pumila",
+    "joinSoon": "Malapit nang magamit ang online na pagpila. Magpatulong sa staff para mailista ka."
   },
   "nav": {
     "queue": "Pila",
@@ -37,8 +62,13 @@
     "emptyTitle": "Wala pa rito",
     "errorTitle": "Nagkaproblema",
     "notFoundTitle": "Hindi nahanap ang page",
+    "notFoundBody": "Pakisuri ang link o ang shop code.",
+    "backHome": "Bumalik sa home",
     "shopNotFound": "Hindi nahanap ang tindahan"
   },
-  "dashboard": { "queueEmpty": "Wala pang nakapila." },
+  "dashboard": {
+    "queueEmpty": "Wala pang nakapila.",
+    "queueEmptyHint": "I-share ang link o QR code ng tindahan para makapila ang mga customer."
+  },
   "admin": { "shopsEmpty": "Wala pang tindahan." }
 }
