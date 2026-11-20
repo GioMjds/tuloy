@@ -28,7 +28,12 @@ export async function verifyToken(
       businessId: p.businessId ?? null,
       exp: p.exp,
     };
-  } catch {
+  } catch (e) {
+    // Dev-only hint; a secret mismatch otherwise looks like a plain login redirect.
+    if (process.env.NODE_ENV !== 'production') {
+      const code = (e as { code?: string }).code ?? (e as Error).message;
+      console.warn('[auth] token rejected:', code);
+    }
     return null; // expired, tampered, or wrong shape
   }
 }

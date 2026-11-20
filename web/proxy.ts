@@ -7,14 +7,15 @@ export async function proxy(req: NextRequest) {
   const token = req.cookies.get(SESSION_COOKIE)?.value;
   const user = token ? await verifyToken(token) : null;
 
-  // Already signed in → skip the login page
+  // Already signed in, so skip the login page; clear a stale cookie otherwise.
   if (pathname === '/login') {
-    return user
-      ? NextResponse.redirect(new URL(homeFor(user.role), req.url))
-      : NextResponse.next();
+    if (user) return NextResponse.redirect(new URL(homeFor(user.role), req.url));
+    const res = NextResponse.next();
+    if (token) res.cookies.delete(SESSION_COOKIE);
+    return res;
   }
 
-  // Not signed in (or expired/invalid token) → login, remember where they were going
+  // Not signed in (or expired/invalid token), so go to login and remember the target.
   if (!user) {
     const url = new URL('/login', req.url);
     url.searchParams.set('next', pathname);
@@ -23,7 +24,7 @@ export async function proxy(req: NextRequest) {
     return res;
   }
 
-  // Wrong area for this role → send them home
+  // Wrong area for this role, so send them to their own home.
   if (pathname.startsWith('/admin') && user.role !== 'SUPER_ADMIN') {
     return NextResponse.redirect(new URL(homeFor(user.role), req.url));
   }
