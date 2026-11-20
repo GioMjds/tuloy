@@ -27,11 +27,18 @@ export const authApi = {
       credentials,
     );
     if (typeof document !== 'undefined') {
+      const secure = location.protocol === 'https:' ? '; Secure' : '';
       document.cookie = `${SESSION_COOKIE}=${encodeURIComponent(
         data.accessToken,
-      )}; path=/; max-age=604800; SameSite=Lax`;
+      )}; path=/; max-age=604800; SameSite=Lax${secure}`;
     }
     return data;
+  },
+
+  // Server logout only logs the event, so the cookie is cleared even if it fails.
+  async logout(): Promise<void> {
+    await apiClient.post('/auth/logout', z.unknown()).catch(() => null);
+    document.cookie = `${SESSION_COOKIE}=; path=/; max-age=0; SameSite=Lax`;
   },
 
   async me(): Promise<AuthUser> {

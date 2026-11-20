@@ -1,10 +1,14 @@
 'use client';
 import { useState } from 'react';
+import type { Route } from 'next';
 import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { loginSchema, type LoginInput, type Role } from '@/lib/auth/shared';
+import { loginSchema, type LoginInput } from '@/lib/auth/shared';
+import { homeFor } from '@/lib/auth/constants';
+import { ApiError } from '@/lib/api/http-client';
+import { authApi } from '@/lib/endpoints/auth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -29,20 +33,20 @@ export function LoginForm({ next }: { next?: string }) {
 
   async function onSubmit(values: LoginInput) {
     setServerError(null);
-    const res = await fetch('/api/auth/login', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(values),
-    }).catch(() => null);
-
-    const data = res ? await res.json().catch(() => ({})) : {};
-    if (!res || !res.ok) {
-      setServerError(data.message ?? 'login_failed');
-      return;
+    try {
+      const { user } = await authApi.login(values);
+      router.replace((safeNext(next, user.role) ?? homeFor(user.role)) as Route);
+      router.refresh();
+    } catch (e) {
+      const status = e instanceof ApiError ? e.status : 0;
+      setServerError(
+        status === 401
+          ? 'invalid_credentials'
+          : status === 400
+            ? 'invalid_input'
+            : 'login_failed',
+      );
     }
-    const role = data.user.role as Role;
-    router.replace(safeNext(next, role) ?? data.redirectTo);
-    router.refresh();
   }
 
   return (

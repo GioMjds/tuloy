@@ -11,6 +11,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { authApi } from '@/lib/endpoints/auth';
 import { useSession } from '@/stores/session-store';
 
 export function UserMenu() {
@@ -21,7 +22,7 @@ export function UserMenu() {
   if (!user) return null;
 
   async function signOut() {
-    await fetch('/api/auth/logout', { method: 'POST' });
+    await authApi.logout();
     clear();
     router.replace('/login');
     router.refresh();
