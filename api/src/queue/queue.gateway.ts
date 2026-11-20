@@ -8,6 +8,7 @@ import { PrismaService } from '../prisma/prisma.service.js';
 
 @WebSocketGateway({
   namespace: 'queue',
+  path: '/api/socket.io',
   cors: { origin: process.env.WEB_ORIGIN?.split(',') ?? '*' },
 })
 export class QueueGateway implements OnGatewayConnection {

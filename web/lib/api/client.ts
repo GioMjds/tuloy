@@ -12,7 +12,8 @@ function getClientCookie(name: string): string | null {
 }
 
 export const apiClient: ValidatedClient = createValidatedClient({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000',
+  // Same origin on Vercel; set NEXT_PUBLIC_API_URL only when the API runs elsewhere.
+  baseUrl: `${process.env.NEXT_PUBLIC_API_URL ?? ''}/api`,
   getToken: () => getClientCookie(SESSION_COOKIE),
   onUnauthorized: () => {
     if (
