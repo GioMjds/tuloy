@@ -18,3 +18,5 @@ export const businessSchema = z.object({
   services: z.array(serviceSchema),
 });
 export type Business = z.infer<typeof businessSchema>;
+
+export const myBusinessSchema = businessSchema.pick({ name: true, slug: true });

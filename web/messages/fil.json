@@ -68,7 +68,18 @@
   },
   "dashboard": {
     "queueEmpty": "Wala pang nakapila.",
-    "queueEmptyHint": "I-share ang link o QR code ng tindahan para makapila ang mga customer."
+    "queueEmptyHint": "I-share ang link o QR code ng tindahan para makapila ang mga customer.",
+    "shareShop": "I-share ang tindahan"
+  },
+  "share": {
+    "description": "I-print ang QR code para sa counter, o ipadala ang link sa mga customer.",
+    "linkLabel": "Link ng tindahan",
+    "copy": "Kopyahin ang link",
+    "copied": "Nakopya ang link.",
+    "copyFailed": "Hindi makopya. Piliin ang link at kopyahin nang mano-mano.",
+    "download": "I-download ang QR",
+    "qrAlt": "QR code ng {name}",
+    "noShop": "Walang aktibong tindahan na naka-link sa account mo."
   },
   "admin": { "shopsEmpty": "Wala pang tindahan." }
 }

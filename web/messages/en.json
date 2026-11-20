@@ -68,7 +68,18 @@
   },
   "dashboard": {
     "queueEmpty": "No one in the queue yet.",
-    "queueEmptyHint": "Share your shop link or QR code so customers can join."
+    "queueEmptyHint": "Share your shop link or QR code so customers can join.",
+    "shareShop": "Share your shop"
+  },
+  "share": {
+    "description": "Print the QR code for your counter, or send the link to customers.",
+    "linkLabel": "Shop link",
+    "copy": "Copy link",
+    "copied": "Link copied.",
+    "copyFailed": "Can't copy. Select the link and copy it manually.",
+    "download": "Download QR",
+    "qrAlt": "QR code for {name}",
+    "noShop": "No active shop is linked to your account."
   },
   "admin": { "shopsEmpty": "No shops yet." }
 }

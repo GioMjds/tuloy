@@ -1,12 +1,15 @@
+import type { ReactNode } from 'react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '@/components/ui/button';
 
 export function EmptyState({
   title,
   description,
+  children,
 }: {
   title: string;
   description?: string;
+  children?: ReactNode;
 }) {
   return (
     <div className="flex min-h-[40dvh] flex-col items-center justify-center gap-1 p-6 text-center">
@@ -14,6 +17,7 @@ export function EmptyState({
       {description && (
         <p className="text-sm text-muted-foreground">{description}</p>
       )}
+      {children && <div className="mt-3">{children}</div>}
     </div>
   );
 }
