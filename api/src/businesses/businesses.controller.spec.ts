@@ -15,4 +15,22 @@ describe('BusinessesController', () => {
     expect(businessesService.findBySlug).toHaveBeenCalledWith('barbero-uno');
     expect(result).toEqual(business);
   });
+
+  it('findMine passes the current user businessId to businessesService.findMine', async () => {
+    const mine = { name: 'Barbero Uno', slug: 'barbero-uno' };
+    const businessesService = {
+      findMine: vi.fn().mockResolvedValue(mine),
+    } as unknown as BusinessesService;
+    const controller = new BusinessesController(businessesService);
+
+    const result = await controller.findMine({
+      id: 'u_1',
+      email: 'owner@example.com',
+      role: 'OWNER',
+      businessId: 'biz_1',
+    } as Parameters<BusinessesController['findMine']>[0]);
+
+    expect(businessesService.findMine).toHaveBeenCalledWith('biz_1');
+    expect(result).toEqual(mine);
+  });
 });

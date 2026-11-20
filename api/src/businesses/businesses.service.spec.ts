@@ -43,6 +43,36 @@ describe('BusinessesService', () => {
     await expect(service.findBySlug('nope')).rejects.toThrow(NotFoundException);
   });
 
+  it('findMine returns only name and slug for the owner business', async () => {
+    prisma.business.findUnique.mockResolvedValue({
+      name: row.name,
+      slug: row.slug,
+      isActive: true,
+    });
+
+    const result = await service.findMine('biz_1');
+
+    expect(result).toEqual({ name: row.name, slug: row.slug });
+    expect(prisma.business.findUnique).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: 'biz_1' } }),
+    );
+  });
+
+  it('findMine throws NotFoundException without querying when user has no business', async () => {
+    await expect(service.findMine(null)).rejects.toThrow(NotFoundException);
+    expect(prisma.business.findUnique).not.toHaveBeenCalled();
+  });
+
+  it('findMine throws NotFoundException for inactive business', async () => {
+    prisma.business.findUnique.mockResolvedValue({
+      name: row.name,
+      slug: row.slug,
+      isActive: false,
+    });
+
+    await expect(service.findMine('biz_1')).rejects.toThrow(NotFoundException);
+  });
+
   it('findBySlug throws NotFoundException for inactive business', async () => {
     prisma.business.findUnique.mockResolvedValue({ ...row, isActive: false });
 
