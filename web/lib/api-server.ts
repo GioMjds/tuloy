@@ -22,7 +22,8 @@ export async function serverFetch<T>(
   }
 
   const res = await fetch(
-    `${env.API_URL}${path}`,
+    // Nest uses URI versioning with default version 1.
+    `${env.API_URL}/v1${path}`,
     auth ? { headers, cache: 'no-store' } : { headers, next: { revalidate } },
   );
 

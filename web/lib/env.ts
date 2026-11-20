@@ -7,7 +7,7 @@ const schema = z.object({
 });
 
 export const env = schema.parse({
-  API_URL: process.env.API_URL ?? 'http://localhost:3000',
+  API_URL: process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL,
   JWT_SECRET: process.env.JWT_SECRET ?? 'kjhsdjkhe2048jf102nsks',
   SESSION_COOKIE_NAME: process.env.SESSION_COOKIE_NAME ?? 'tuloy_session',
 });
